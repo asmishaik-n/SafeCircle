@@ -1,0 +1,71 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>SafeCircle Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<script>
+
+let currentLat = "";
+let currentLon = "";
+
+function showAlert() {
+    alert("Emergency Alert Activated!");
+    window.location.href = "/contacts";
+}
+
+function getLocation() {
+
+    alert("Location button clicked!");
+
+    if (navigator.geolocation) {
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                currentLat = position.coords.latitude;
+                currentLon = position.coords.longitude;
+
+                document.getElementById("location").innerHTML =
+                    "📍 Latitude: " + currentLat +
+                    "<br>📍 Longitude: " + currentLon +
+                    "<br><br><a target='_blank' href='https://maps.google.com/?q=" +
+                    currentLat + "," + currentLon +
+                    "'>🗺 Open in Google Maps</a>";
+
+            },
+
+            function(error) {
+
+                alert("Location Error: " + error.message);
+
+            }
+
+        );
+
+    } else {
+
+        alert("Location not supported");
+
+    }
+
+}
+
+</script>
+<body>
+
+    <h1>🛡️ SafeCircle</h1>
+
+    <p>Your Personal Safety Companion ❤️</p>
+
+<div class="center-btn">
+        <button onclick="showAlert()">SOS EMERGENCY</button>
+        <button onclick="getLocation()">📍 Get My Location</button>
+
+<p id="location"></p>
+
+    
+</div>
+</body>
+</html>

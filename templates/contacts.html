@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Emergency Contacts</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <h3>Saved Contacts: {{ count }}</h3>
+
+    {% if message %}
+    <p class="success">{{ message }}</p>
+    {% endif %}
+
+    <h2>Add Trusted Contact</h2>
+
+    <form method="POST">
+        <input type="text" name="name" placeholder="Enter Name" required>
+        <br><br>
+
+        <input type="text" name="phone" placeholder="Enter Phone Number" required>
+        <br><br>
+
+        <button type="submit">Save Contact</button>
+    </form>
+
+    <br><br>
+
+    <h2>Emergency Numbers</h2>
+
+    <ul>
+        <li>
+            Police - 100
+            <a href="tel:100">📞 Call</a>
+        </li>
+
+        <li>
+            Women Helpline - 1091
+            <a href="tel:1091">📞 Call</a>
+        </li>
+
+        <li>
+            Ambulance - 108
+            <a href="tel:108">📞 Call</a>
+        </li>
+    </ul>
+
+    <br>
+
+    <h2>Trusted Contacts</h2>
+
+    
+        <h2>Trusted Contacts</h2>
+
+<ul>
+{% for contact in contacts %}
+    <li>
+        {{ contact.name }} - {{ contact.phone }}
+
+        <a href="tel:{{ contact.phone }}">
+            📞 Call
+        </a>
+
+        <a href="sms:{{ contact.phone }}?body=🚨 Emergency Alert! I need help. Please contact me immediately.">
+            📩 Alert
+        </a>
+
+        <a href="/delete/{{ loop.index0 }}">
+            Delete
+        </a>
+    </li>
+{% endfor %}
+</ul> 
+    <br><br>
+
+    <a href="/">Back Home</a>
+
+</body>
+</html>
