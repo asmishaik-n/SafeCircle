@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
 
-app = Flask(__name__)
+app = app = Flask(__name__, template_folder="templates_old")
 app.secret_key = "safecircle_secret"
 contacts = []
 current_location = ""
