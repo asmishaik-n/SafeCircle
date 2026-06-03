@@ -2,6 +2,9 @@
 <html>
 <head>
     <title>SafeCircle Home</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <script>
@@ -10,51 +13,59 @@ let currentLat = "";
 let currentLon = "";
 
 function showAlert() {
+
     alert("Emergency Alert Activated!");
-    window.location.href = "/contacts";
+
+    if (currentLat && currentLon) {
+
+        let locationLink =
+            "https://maps.google.com/?q=" +
+            currentLat + "," + currentLon;
+
+        fetch('/save_location', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: 'location=' + encodeURIComponent(locationLink)
+        })
+        .then(() => {
+            window.location.href = "/contacts";
+        });
+
+    } else {
+
+        alert("Please click 'Get My Location' first.");
+
+    }
+
 }
 
 function getLocation() {
 
     alert("Location button clicked!");
 
-    if (navigator.geolocation) {
+    currentLat = "16.3067";
+    currentLon = "80.4365";
 
-        navigator.geolocation.getCurrentPosition(
-
-            function(position) {
-
-                currentLat = position.coords.latitude;
-                currentLon = position.coords.longitude;
-
-                document.getElementById("location").innerHTML =
-                    "📍 Latitude: " + currentLat +
-                    "<br>📍 Longitude: " + currentLon +
-                    "<br><br><a target='_blank' href='https://maps.google.com/?q=" +
-                    currentLat + "," + currentLon +
-                    "'>🗺 Open in Google Maps</a>";
-
-            },
-
-            function(error) {
-
-                alert("Location Error: " + error.message);
-
-            }
-
-        );
-
-    } else {
-
-        alert("Location not supported");
-
-    }
+    document.getElementById("location").innerHTML =
+        "📍 Latitude: " + currentLat +
+        "<br>📍 Longitude: " + currentLon +
+        "<br><br><a target='_blank' href='https://maps.google.com/?q=" +
+        currentLat + "," + currentLon +
+        "'>🗺 Open in Google Maps</a>";
 
 }
 
 </script>
 <body>
+    {% if session.get('user') %}
+<h3>👋 Welcome, {{ session['user'] }}</h3>
 
+<a href="/logout">🚪 Logout</a>
+<a href="/profile">👤 Profile</a>
+<a href="/about">ℹ️ About</a>
+{% endif %}
     <h1>🛡️ SafeCircle</h1>
 
     <p>Your Personal Safety Companion ❤️</p>
@@ -67,5 +78,20 @@ function getLocation() {
 
     
 </div>
+<div class="tips-box">
+
+    <h2>🛡 Safety Tips</h2>
+
+    <ul>
+        <li>📍 Share your location with trusted contacts.</li>
+        <li>📞 Call emergency services if needed.</li>
+        <li>⚠️ Use SOS button during emergencies.</li>
+    </ul>
+
+</div>
+<p style="font-size:14px; margin-top:40px;">
+    SafeCircle © 2026 | 🧕 Built by Asmi 💜
+</p>
+
 </body>
 </html>

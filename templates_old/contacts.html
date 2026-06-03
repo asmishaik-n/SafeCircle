@@ -2,13 +2,14 @@
 <html>
 <head>
     <title>Emergency Contacts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 
 <body>
 
-    <h3>Saved Contacts: {{ count }}</h3>
+    <h3>📇 Saved Contacts: {{ count }}/5</h3>
 
     {% if message %}
     <p class="success">{{ message }}</p>
@@ -50,32 +51,45 @@
     <br>
 
     <h2>Trusted Contacts</h2>
+    <div class="contacts-container">
+
+{% for contact in contacts %}
+
+<div class="contact-card">
+
+
+<h3>👤 {{ contact.name }}</h3>
+
+<p>📱 {{ contact.phone }}</p>
+
+<a class="call-btn" href="tel:{{ contact.phone }}">
+    📞 Call
+</a>
+
+<a class="alert-btn" href="sms:{{ contact.phone }}?body=🚨 Emergency Alert! I need help.%0A%0AMy Location:%0A{{ location }}">
+    📩 Alert
+</a>
+
+<a class="delete-btn" href="/delete/{{ loop.index0 }}">
+    🗑 Delete
+</a>
+
+
+</div>
+
+{% endfor %}
+
+</div>
+
 
     
-        <h2>Trusted Contacts</h2>
+        
 
-<ul>
-{% for contact in contacts %}
-    <li>
-        {{ contact.name }} - {{ contact.phone }}
 
-        <a href="tel:{{ contact.phone }}">
-            📞 Call
-        </a>
-
-        <a href="sms:{{ contact.phone }}?body=🚨 Emergency Alert! I need help. Please contact me immediately.">
-            📩 Alert
-        </a>
-
-        <a href="/delete/{{ loop.index0 }}">
-            Delete
-        </a>
-    </li>
-{% endfor %}
-</ul> 
     <br><br>
 
     <a href="/">Back Home</a>
 
 </body>
+</html>
 </html>
